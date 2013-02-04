@@ -1,0 +1,60 @@
+#!/bin/bash
+
+HOME_SSID=my_home_ssid
+
+# figure out the base directory of this script
+BASE_DIR=`dirname $0`
+if [ ! "$BASE_DIR" = "." ]; then
+cd $BASE_DIR
+fi
+
+exec &> $BASE_DIR/locationchanger.log
+
+SSID_FILE=ssid
+
+sleep 2
+
+AIRPORT=/System/Library/PrivateFrameworks/Apple80211.framework/Versions/A/Resources/airport
+AIRPORT_INFO=`$AIRPORT -I`
+
+if [ "$AIRPORT_INFO" = "AirPort: Off" ]; then
+  echo "wifi turned off"
+  rm $SSID_FILE
+  echo "exiting..."
+  exit
+fi
+
+SSID=`$AIRPORT -I | grep ' SSID:' | cut -d ':' -f 2 | tr -d ' '`
+
+if [ "$SSID" == "" ]; then
+  echo "Too soon, no ssid set. Exiting..."
+  exit
+fi
+
+if [ -e "$SSID_FILE" ]; then
+  if [ "$SSID" = "`cat $SSID_FILE`" ]; then
+    echo "SSID already set. Exiting..."
+    exit
+  fi
+fi
+
+echo "Saving '$SSID' to $SSID_FILE"
+echo $SSID > $SSID_FILE
+
+MAC_SED=".*MAC address \(.*\) currently set to \(.*\)"
+#MAC_LIST=`/usr/local/bin/spoof-mac list --wifi`
+#MAC_ORIG=`echo $MAC_LIST | sed -n "s/^$MAC_SED/\1/p"`
+#MAC_CURR=`echo $MAC_LIST | sed -n "s/^$MAC_SED/\2/p"`
+
+if [ "$SSID" = "$HOME_SSID" ]; then
+  HOST_TYPE=int
+  echo "Resetting wifi"
+  /usr/local/bin/spoof-mac reset wi-fi
+else
+  HOST_TYPE=ext
+  echo "Randomizing wifi"
+  /usr/local/bin/spoof-mac randomize wi-fi
+fi
+
+echo "Using `pwd`/hosts-$HOST_TYPE"
+cp -f hosts-$HOST_TYPE /etc/hosts
