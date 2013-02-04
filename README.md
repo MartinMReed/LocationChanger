@@ -1,5 +1,5 @@
 # Usage
-Each time WiFi reconnects, a new random MAC address will be selected. This can be disabled when connecting to a home network by updating `$HOME_SSID` in `locationchanger`.
+Each time WiFi connects to a new network, a random MAC address will be selected and the hosts file will be updated. The hosts file update is separate from the MAC address selection and not required. This can be disabled and revert back to originals when connecting to a home network by updating `$HOME_SSID` in `locationchanger`.
 
 # Installation
 Unzip and install [SpoofMAC](https://github.com/feross/SpoofMAC)  
