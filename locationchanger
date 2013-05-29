@@ -1,6 +1,8 @@
 #!/bin/bash
 
 HOME_SSID=my_home_ssid
+SPOOF_MAC_DIR=/usr/local/share/python
+#SPOOF_MAC_DIR=/usr/local/bin
 
 # figure out the base directory of this script
 BASE_DIR=`dirname $0`
@@ -43,9 +45,9 @@ echo $SSID > $SSID_FILE
 if [ "$SSID" = "$HOME_SSID" ]; then
   echo "Resetting wifi"
   cp -f hosts-int /etc/hosts
-  spoof-mac reset wi-fi
+  $SPOOF_MAC_DIR/spoof-mac reset wi-fi
 else
   echo "Randomizing wifi"
   cp -f hosts-ext /etc/hosts
-  spoof-mac randomize wi-fi
+  $SPOOF_MAC_DIR/spoof-mac randomize wi-fi
 fi
