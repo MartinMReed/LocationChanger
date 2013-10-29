@@ -10,7 +10,7 @@ if [ ! "$BASE_DIR" = "." ]; then
 cd $BASE_DIR
 fi
 
-exec &> $BASE_DIR/locationchanger.log
+exec &> locationchanger.log
 
 SSID_FILE=ssid
 
@@ -44,10 +44,10 @@ echo $SSID > $SSID_FILE
 
 if [ "$SSID" = "$HOME_SSID" ]; then
   echo "Resetting wifi"
-  cp -f hosts-int /etc/hosts
+#  cp -f hosts-int /etc/hosts
   $SPOOF_MAC_DIR/spoof-mac reset wi-fi
 else
   echo "Randomizing wifi"
-  cp -f hosts-ext /etc/hosts
+#  cp -f hosts-ext /etc/hosts
   $SPOOF_MAC_DIR/spoof-mac randomize wi-fi
 fi
