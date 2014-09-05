@@ -18,28 +18,27 @@ sleep 2
 
 AIRPORT=/System/Library/PrivateFrameworks/Apple80211.framework/Versions/A/Resources/airport
 
+# wifi was turned off
 if [ "`$AIRPORT -I`" = "AirPort: Off" ]; then
-  echo "wifi turned off"
   rm $SSID_FILE
-  echo "exiting..."
   exit
 fi
 
+# check the current SSID we are connected to
 SSID=`$AIRPORT -I | grep ' SSID:' | cut -d ':' -f 2 | tr -d ' '`
 
+# got called too soon, we are not connected yet
 if [ "$SSID" = "" ]; then
-  echo "Too soon, no ssid set. Exiting..."
   exit
 fi
 
+# the SSID is already set. this is called a second time because of spoof-mac
 if [ -e "$SSID_FILE" ]; then
   if [ "$SSID" = "`cat $SSID_FILE`" ]; then
-    echo "SSID already set. Exiting..."
     exit
   fi
 fi
 
-echo "Saving '$SSID' to $SSID_FILE"
 echo $SSID > $SSID_FILE
 
 if [ "$SSID" = "$HOME_SSID" ]; then
