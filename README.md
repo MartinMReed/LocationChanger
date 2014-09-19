@@ -7,8 +7,9 @@ Each time WiFi connects to a new network, a random MAC address will be selected 
 3. Verify that `$SPOOF_MAC_DIR` in `locationchanger` is pointing to the correct location of spoof-mac (needed when running the LaunchDaemon as root)
 4. Update the `ProgramArguments` path in `LocationChanger.plist` to point to the final location of `locationchanger`
 5. Move the `LocationChanger.plist` to `/Library/LaunchDaemons/org.hardisonbrewing.LocationChanger.plist`
-6. Set the LaunchDaemon permissions: `sudo chown root:wheel /Library/LaunchDaemons/org.hardisonbrewing.LocationChanger.plist`
-7. Load the LaunchDaemon: `sudo launchctl load /Library/LaunchDaemons/org.hardisonbrewing.LocationChanger.plist`
+6. Set the LaunchDaemon owner: `sudo chown root:wheel /Library/LaunchDaemons/org.hardisonbrewing.LocationChanger.plist`
+7. Set the LaunchDaemon permissions: `sudo chmod 644 /Library/LaunchDaemons/org.hardisonbrewing.LocationChanger.plist`
+8. Load the LaunchDaemon: `sudo launchctl load /Library/LaunchDaemons/org.hardisonbrewing.LocationChanger.plist`
 
 # Based On
 [https://github.com/feross/SpoofMAC](https://github.com/feross/SpoofMAC)  

@@ -10,8 +10,6 @@ if [ ! "$BASE_DIR" = "." ]; then
 cd $BASE_DIR
 fi
 
-exec &> locationchanger.log
-
 SSID_FILE=ssid
 
 sleep 2
@@ -43,10 +41,17 @@ echo $SSID > $SSID_FILE
 
 if [ "$SSID" = "$HOME_SSID" ]; then
   echo "Resetting wifi"
-#  cp -f hosts-int /etc/hosts
+#  cp -f hosts-home /etc/hosts
   $SPOOF_MAC_DIR/spoof-mac reset wi-fi
 else
   echo "Randomizing wifi"
-#  cp -f hosts-ext /etc/hosts
+#  cp -f hosts-random /etc/hosts
   $SPOOF_MAC_DIR/spoof-mac randomize wi-fi
 fi
+
+# From Apple Documentation:
+# Important: If your daemon shuts down too quickly after being launched,
+# launchd may think it has crashed. Daemons that continue this behavior
+# may be suspended and not launched again when future requests arrive.
+# To avoid this behavior, do not shut down for at least 10 seconds after launch.
+sleep 10
