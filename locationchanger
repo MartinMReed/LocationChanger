@@ -18,7 +18,8 @@ AIRPORT=/System/Library/PrivateFrameworks/Apple80211.framework/Versions/A/Resour
 
 # wifi was turned off
 if [ "`$AIRPORT -I`" = "AirPort: Off" ]; then
-  rm $SSID_FILE
+  rm -f $SSID_FILE
+#  cp -f hosts-default /etc/hosts
   exit
 fi
 
@@ -45,7 +46,7 @@ if [ "$SSID" = "$HOME_SSID" ]; then
   $SPOOF_MAC_DIR/spoof-mac reset wi-fi
 else
   echo "Randomizing wifi"
-#  cp -f hosts-random /etc/hosts
+#  cp -f hosts-default /etc/hosts
   $SPOOF_MAC_DIR/spoof-mac randomize wi-fi
 fi
 
